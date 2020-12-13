@@ -1,0 +1,61 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+with open('inputs/test.txt') as input_file:
+# with open('inputs/1.txt') as input_file:
+    lines = [l.strip() for l in input_file.read().splitlines()]
+
+# print(lines)
+wx = 10
+wy = 1
+dx = [0,1,0,-1]
+dy = [1,0,-1,0]
+x = 0
+y = 0
+direction = 1
+
+wxplot = [10]
+wyplot = [1]
+xplot = [0]
+yplot = [0]
+
+for line in lines:
+    instruction = line[0]
+    units = int(line[1:])
+    # print(instruction, units)
+    if instruction == 'N':
+        wy += units
+    elif instruction == 'S':
+        wy -= units
+    elif instruction == 'E':
+        wx += units
+    elif instruction == 'W':
+        wx -= units
+    elif instruction == 'L':
+        for _ in range(units//90):
+            wx,wy = -wy,wx
+    elif instruction == 'R':
+        for _ in range(units//90):
+            wx,wy = wy,-wx
+    elif instruction == 'F':
+        x += units*wx
+        y += units*wy
+    else:
+        assert False
+    print(line, instruction, units, x, y)
+    xplot.append(x)
+    wxplot.append(x+wx)
+    yplot.append(y)
+    wyplot.append(y+wy)
+
+xpoints = np.array(xplot)
+wxpoints = np.array(wxplot)
+ypoints = np.array(yplot)
+wypoints = np.array(wyplot)
+# plt.plot([0, x], [0, y], 'o')
+plt.plot(xpoints, ypoints)
+plt.plot(xpoints, ypoints, 'o')
+plt.plot(wxpoints, wypoints, 'o')
+plt.show()
+
+print(abs(x)+abs(y))
